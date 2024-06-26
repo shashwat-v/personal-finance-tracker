@@ -1,11 +1,12 @@
-import { useState } from "react";
-import Login from "./pages/Login";
-import "./App.css";
-
+import { Route, Routes, Navigate } from "react-router-dom";
+import { Dashboard, Login, Signup, Website } from "./pages/index";
+import Layout from "./pages/Layout";
 function App() {
   return (
     <>
-      <Login></Login>
+      <h1 className="text-7xl bg-gray-600 h-screen w-full">
+        Initialising Project
+      </h1>
     </>
   );
 }
