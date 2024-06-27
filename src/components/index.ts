@@ -1,3 +1,3 @@
 import Sidebar from "./Sidebar";
-
-export { Sidebar };
+import PieChart from "./PieChart";
+export { Sidebar, PieChart };

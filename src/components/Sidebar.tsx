@@ -50,8 +50,11 @@ function Sidebar() {
         <span className="text-xl">Finance Tracker</span>
       </h1>
       <div className="flex-1 flex flex-col gap-y-6 py-8">
-        {linkdata.map((data) => (
-          <h1 className="flex gap-3 items-center px-3 py-2 rounded-full text-[#2e335b] font-semibold hover:bg-slate-400">
+        {linkdata.map((data, index) => (
+          <h1
+            key={index}
+            className="flex gap-3 items-center px-3 py-2 rounded-full text-[#2e335b] font-semibold hover:bg-slate-400"
+          >
             <span className="text-[25px] font-bold">{data.icon}</span>
             <span className="text-[15px] ">{data.label}</span>
           </h1>
