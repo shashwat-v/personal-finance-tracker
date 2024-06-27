@@ -16,7 +16,7 @@ function Login() {
       </div>
 
       <div
-        className="relative z-10 p-8 bg-white rounded-2xl shadow-lg border-2 border-gray-400 flex-col justify-center items-center"
+        className="relative z-10 p-8 bg-white rounded-2xl shadow-lg border-2 top-24 border-gray-400 flex-col justify-center items-center"
         style={{ width: "390px", height: "500px" }}
       >
         <h1 className="text-3xl font-bold mb-1 text-left">Hey,</h1>

@@ -3,11 +3,19 @@ import { Dashboard, Login, Signup, Website } from "./pages/index";
 import Layout from "./pages/Layout";
 function App() {
   return (
-    <>
-      <h1 className="text-7xl bg-gray-600 h-screen w-full">
-        Initialising Project
-      </h1>
-    </>
+    <main>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index path="/" element={<Navigate to="/dashboard" />} />
+          {/* Default route for Layout */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/website" element={<Website />} />
+          <Route path="*" element={<Dashboard />} />
+        </Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
+    </main>
   );
 }
 
