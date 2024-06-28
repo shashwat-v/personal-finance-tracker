@@ -53,10 +53,10 @@ function Sidebar() {
         {linkdata.map((data, index) => (
           <h1
             key={index}
-            className="flex gap-3 items-center px-3 py-2 rounded-full text-[#2e335b] font-semibold hover:bg-slate-400"
+            className="flex gap-3 items-center px-3 py-1   rounded-full text-[#2e335b] font-semibold hover:bg-slate-400"
           >
             <span className="text-[25px] font-bold">{data.icon}</span>
-            <span className="text-[15px] ">{data.label}</span>
+            <span className="text-[22px] ">{data.label}</span>
           </h1>
         ))}
       </div>

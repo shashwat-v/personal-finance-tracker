@@ -18,19 +18,20 @@ const data = {
         "rgba(153, 102, 255)", // Purple
       ],
       borderColor: [
-        "rgba(255, 99, 132, 1)", // Red
-        "rgba(54, 162, 235, 1)", // Blue
-        "rgba(255, 206, 86, 1)", // Yellow
-        "rgba(75, 192, 192, 1)", // Green
-        "rgba(153, 102, 255, 1)", // Purple
+        // "rgba(255, 99, 132, 1)", // Red
+        // "rgba(54, 162, 235, 1)", // Blue
+        // "rgba(255, 206, 86, 1)", // Yellow
+        // "rgba(75, 192, 192, 1)", // Green
+        // "rgba(153, 102, 255, 1)", // Purple
+        "rgba(255, 255, 255, 1)", // White border
       ],
-      borderWidth: 1,
+      borderWidth: 4,
     },
   ],
 };
 // Chart options to hide the default legend
 const options = {
-  cutout: "70%", // Increase inner radius to 70% of the total radius
+  cutout: "75%", // Increase inner radius to 70% of the total radius
   plugins: {
     legend: {
       display: false, // Hide default legend
@@ -43,7 +44,7 @@ const options = {
 function PieChart() {
   return (
     <div className="flex flex-col items-center">
-      <div className="w-80 h-80">
+      <div className="w-60 h-60">
         <Doughnut data={data} options={options} />
       </div>
       <ul className="mt-4 space-y-2 max-w-sm list-none">
