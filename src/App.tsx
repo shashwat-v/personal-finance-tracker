@@ -9,9 +9,9 @@ function App() {
           <Route index path="/" element={<Navigate to="/dashboard" />} />
           {/* Default route for Layout */}
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/website" element={<Website />} />
           <Route path="*" element={<Dashboard />} />
         </Route>
+        <Route path="/website" element={<Website />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
