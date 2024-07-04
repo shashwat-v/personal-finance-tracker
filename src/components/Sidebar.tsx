@@ -6,7 +6,8 @@ import { GiMoneyStack } from "react-icons/gi";
 import { AiOutlineStock } from "react-icons/ai";
 import { LuGoal } from "react-icons/lu";
 import { TbReportSearch } from "react-icons/tb";
-
+import { useAppDispatch, useAppSelector } from "../redux/hooks.ts";
+import {get}
 const linkdata = [
   {
     label: "Dashboard",
@@ -41,6 +42,14 @@ const linkdata = [
 ];
 
 function Sidebar() {
+  const { userInfo } = useAppDispatch((state) => state.auth);
+  const dispatch = useDispatch();
+
+  // automatically authenticate user if token is found
+  const { data, isFetching } = useGetUserDetailsQuery("userDetails", {
+    // perform a refetch every 15mins
+    pollingInterval: 900000,
+  });
   return (
     <div className="w-full h-full flex flex-col gap-6 p-5">
       <h1 className="flex gap-3 items-center justify-center">
