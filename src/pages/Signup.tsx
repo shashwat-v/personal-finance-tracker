@@ -9,8 +9,6 @@ import { RiEyeCloseLine } from "react-icons/ri";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { registerUser } from "../redux/slices/auth/authActions";
-import { useAppDispatch, useAppSelector } from "../redux/hooks.ts";
 
 interface FormInputs extends FieldValues {
   fullname: string;
@@ -20,17 +18,17 @@ interface FormInputs extends FieldValues {
 }
 
 // const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
-function Login() {
-  const { loading, userInfo, success } = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
+function Signup() {
+  // const { loading, userInfo, success } = useAppSelector((state) => state.auth);
+  // const dispatch = useAppDispatch();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
-  useEffect(() => {
-    // redirect user to login page if registration was successful
-    if (success) navigate("/login");
-    // redirect authenticated user to profile screen
-    if (userInfo) navigate("/");
-  }, [navigate, userInfo, success]);
+  // useEffect(() => {
+  //   // redirect user to login page if registration was successful
+  //   if (success) navigate("/login");
+  //   // redirect authenticated user to profile screen
+  //   if (userInfo) navigate("/");
+  // }, [navigate, userInfo, success]);
   const {
     register,
     handleSubmit,
@@ -45,7 +43,7 @@ function Login() {
     }
     // transform email string to lowercase to avoid case sensitivity issues in login
     data.email = data.email.toLowerCase();
-    dispatch(registerUser(data));
+    // dispatch(registerUser(data));
     navigate("/");
   };
 
@@ -155,7 +153,7 @@ function Login() {
               type="submit"
               className="w-60 mb-4 mt-4 p-3 bg-[#00A4DF] text-white text-lg rounded-md"
               onClick={handleSubmit(onSubmit)}
-              disabled={loading}
+              // disabled={loading}
             >
               Signup
             </button>
@@ -180,4 +178,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;

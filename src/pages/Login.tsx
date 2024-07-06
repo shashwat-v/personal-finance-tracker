@@ -1,4 +1,3 @@
-import React from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import loginBackground from "../assets/LoginBackground.webp";
 import googleIcon from "../assets/GoogleIcon.png";
@@ -8,8 +7,15 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { BsEyeFill } from "react-icons/bs";
 import { RiEyeCloseLine } from "react-icons/ri";
-import { userLogin } from "../redux/slices/auth/authActions.ts";
-import { useAppDispatch, useAppSelector } from "../redux/hooks.ts";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import {
+  loginInFailure,
+  loginInStart,
+  loginInSuccess,
+} from "../redux/slices/auth/userSlice";
+import { loginUser } from "../redux/slices/auth/apiService";
+import { store } from "../redux/store";
 // import { GiEarrings } from "react-icons/gi";
 
 interface FormInputs extends FieldValues {
@@ -20,26 +26,33 @@ interface FormInputs extends FieldValues {
 function Login() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>();
-  const { loading, userInfo, error } = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
+  const { loading, currentUser } = useSelector(
+    (state: RootState) => state.user
+  );
   useEffect(() => {
-    if (userInfo) {
+    if (currentUser) {
       navigate("/");
     }
-  }, [navigate, userInfo]);
-  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+  }, [navigate, currentUser]);
+
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    dispatch(loginInStart());
     try {
-      console.log(data);
-      console.log("Login Succesfull");
-      dispatch(userLogin(data));
-      navigate("/");
+      const response = await loginUser(data);
+      const { email, password, token } = response.data;
+      dispatch(loginInSuccess({ email, password, token }));
+      localStorage.setItem("token", response.data.token);
+      console.log(`${response}:Login succesfully`);
+      console.log("State after loginInSuccess:", store.getState());
     } catch (error) {
-      console.log(error);
+      dispatch(loginInFailure(data));
+      console.log(`${data}:Login failed ${error}`);
     }
   };
   const togglePasswordVisibility = () => {
@@ -69,13 +82,16 @@ function Login() {
             <input
               type="email"
               placeholder="Email"
+              {...register("email", { required: "Email is required" })}
               className="w-full p-3 pl-14 border border-gray-300 rounded-md bg-[#F6F6F6] text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400"
             />
+            {errors.email && (
+              <p className="text-red-600">{errors.email.message}</p>
+            )}
             <img
               src={emailIcon}
               alt="Email"
               className="absolute top-3 left-3 w-8 h-7 opacity-75"
-              {...register("email", { required: "Email is required" })}
             />
           </div>
 
@@ -84,9 +100,12 @@ function Login() {
               type={passwordVisible ? "text" : "password"}
               placeholder="Password"
               className="w-full p-3 pl-14 border border-gray-300 rounded-md bg-[#F6F6F6]  text-[16px] text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400"
-              {...register("Password", {
+              {...register("password", {
                 required: "Password is required",
-                minLength: 8,
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters",
+                },
               })}
             />
             {errors.password && (
@@ -107,6 +126,7 @@ function Login() {
           </div>
           <button
             type="submit"
+            // onClick={handleSubmit(onSubmit)}
             className="w-full mb-4 mt-4 p-3 bg-[#00A4DF] text-white text-lg rounded-md"
             disabled={loading}
           >
