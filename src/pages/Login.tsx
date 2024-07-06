@@ -126,7 +126,6 @@ function Login() {
           </div>
           <button
             type="submit"
-            // onClick={handleSubmit(onSubmit)}
             className="w-full mb-4 mt-4 p-3 bg-[#00A4DF] text-white text-lg rounded-md"
             disabled={loading}
           >
