@@ -1,13 +1,18 @@
-import React from "react";
 import PieChart from "../components/PieChart";
+import Account from "../components/Account";
+import PlaidComp from "../components/PlaidComp";
 function Dashboard() {
   return (
     <div className="flex">
       <div className=" h-auto w-[400px] rounded-xl border-[#EEEDEB] text-[#2E335B] border-2 flex flex-col items-center gap-2">
-        <h1 className="text-2xl self-center m-2">Asset Allocation:</h1>
+        <h1 className="text-3xl self-center m-2">Asset Allocation</h1>
         <div>
           <PieChart />
         </div>
+      </div>
+      <div className="flex-1 border-black border-solid border-2 rounded-lg">
+        <PlaidComp />
+        {/* <Account /> */}
       </div>
     </div>
   );

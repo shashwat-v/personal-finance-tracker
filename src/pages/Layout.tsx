@@ -4,7 +4,7 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import { logOut } from "../redux/slices/auth/userSlice";
-
+import { CiLogout } from "react-icons/ci";
 function Layout() {
   const dispatch = useDispatch();
 
@@ -28,12 +28,16 @@ function Layout() {
       </div>
       <div className="flex-1 overflow-y-auto m-3">
         <div className="flex flex-col gap-4">
-          <span>
-            <button onClick={handleLogout}>Logout</button>
-          </span>
-          <span className="text-[30px] self-end">
-            <FaUserCircle />
-          </span>
+          <div className="flex justify-end gap-3">
+            <button onClick={handleLogout}>
+              <span className="text-[30px] ">
+                <CiLogout />
+              </span>
+            </button>
+            <span className="text-[30px] ">
+              <FaUserCircle />
+            </span>
+          </div>
           <div className="flex-1 p-4 2xl:px-10">
             <Outlet />
           </div>
