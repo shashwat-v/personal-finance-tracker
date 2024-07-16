@@ -45,8 +45,8 @@ function Login() {
     dispatch(loginInStart());
     try {
       const response = await loginUser(data);
-      const { email, password, token } = response.data;
-      dispatch(loginInSuccess({ email, password, token }));
+      const { _id, email, password, token } = response.data;
+      dispatch(loginInSuccess({ email, password, _id, token }));
       localStorage.setItem("token", response.data.token);
       console.log(`${response}:Login succesfully`);
       console.log("State after loginInSuccess:", store.getState());

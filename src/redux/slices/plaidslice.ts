@@ -1,19 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface PlaidState {
+interface PlaidState {
   linkToken: string | null;
   accessToken: string | null;
   isRegistered: boolean;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
+  accounts: any[];
+  transactions: any[];
 }
 
 const initialState: PlaidState = {
   linkToken: null,
   accessToken: null,
-  isRegistered: true,
+  isRegistered: false,
   status: "idle",
   error: null,
+  accounts: [],
+  transactions: [],
 };
 
 const plaidSlice = createSlice({
@@ -25,7 +29,6 @@ const plaidSlice = createSlice({
     },
     setAccessToken(state, action: PayloadAction<string>) {
       state.accessToken = action.payload;
-      state.isRegistered = true;
     },
     setStatus(
       state,
@@ -36,10 +39,26 @@ const plaidSlice = createSlice({
     setError(state, action: PayloadAction<string | null>) {
       state.error = action.payload;
     },
+    setAccounts(state, action: PayloadAction<any[]>) {
+      state.accounts = action.payload;
+    },
+    setTransactions(state, action: PayloadAction<any[]>) {
+      state.transactions = action.payload;
+    },
+    setIsRegistered(state, action: PayloadAction<boolean>) {
+      state.isRegistered = action.payload;
+    },
   },
 });
 
-export const { setLinkToken, setAccessToken, setStatus, setError } =
-  plaidSlice.actions;
+export const {
+  setLinkToken,
+  setAccessToken,
+  setStatus,
+  setError,
+  setAccounts,
+  setTransactions,
+  setIsRegistered,
+} = plaidSlice.actions;
 
 export default plaidSlice.reducer;

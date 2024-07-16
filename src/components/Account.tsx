@@ -2,8 +2,11 @@ import React from "react";
 import Card from "./Card";
 import { MdAccountBalanceWallet } from "react-icons/md";
 import transactions from "../assets/transaction";
-
-function Account() {
+interface AccountProps {
+  accounts: any[];
+  transactions: any[];
+}
+const Account: React.FC = () => {
   return (
     <div className="flex flex-col m-3 gap-2 text-[#2E335B]">
       <h1 className="self-center text-3xl">Account Information</h1>
@@ -18,7 +21,7 @@ function Account() {
             Account Balance
           </h1>
           <h2 className="text-2xl font-bold ">
-            <span>₹10000</span>
+            <span></span>
           </h2>
         </div>
       </div>
@@ -44,6 +47,6 @@ function Account() {
       </div>
     </div>
   );
-}
+};
 
 export default Account;
