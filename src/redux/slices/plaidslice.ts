@@ -13,7 +13,7 @@ interface PlaidState {
 const initialState: PlaidState = {
   linkToken: null,
   accessToken: null,
-  isRegistered: false,
+  isRegistered: true,
   status: "idle",
   error: null,
   accounts: [],

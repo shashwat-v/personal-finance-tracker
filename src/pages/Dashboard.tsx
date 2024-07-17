@@ -10,7 +10,7 @@ function Dashboard() {
           <PieChart />
         </div>
       </div>
-      <div className="flex-1 border-black border-solid border-2 rounded-lg">
+      <div className="flex-1 border-[#EEEDEB] text-[#2E335B] border-solid border-2 rounded-lg mx-4">
         <PlaidComp />
         {/* <Account /> */}
       </div>

@@ -26,14 +26,15 @@ const Account: React.FC = () => {
         </div>
       </div>
       {/* col */}
-      <div>
+      <div className="pt-4">
+      {/* <div className="flex-grow flex flex-col"> */}
         <h1 className="text-xl">Recent Transactions</h1>
-        <div className="overflow-auto flex flex-col gap-1">
+        <div className="overflow-auto flex flex-col gap-1 h-60 overflow-y-scroll no-scrollbar">
           {transactions.map((trans, index) => {
             return (
               <div
                 key={index}
-                className="flex justify-between items-center border-b border-gray-200 py-2"
+                className="flex justify-between items-center border-b border-gray-200 py-2.5"
               >
                 <div className="flex items-center gap-2">
                   <h1>{trans.category}</h1>
