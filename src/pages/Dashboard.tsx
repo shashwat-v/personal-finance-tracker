@@ -1,6 +1,7 @@
 import PieChart from "../components/PieChart";
 import Account from "../components/Account";
 import PlaidComp from "../components/PlaidComp";
+import Modal from "../components/Modal";
 function Dashboard() {
   return (
     <div className="flex">
