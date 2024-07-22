@@ -13,7 +13,7 @@ interface PlaidState {
 const initialState: PlaidState = {
   linkToken: null,
   accessToken: null,
-  isRegistered: true,
+  isRegistered: false, //set true to check account component
   status: "idle",
   error: null,
   accounts: [],
