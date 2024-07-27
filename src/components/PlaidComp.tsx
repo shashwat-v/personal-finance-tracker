@@ -56,10 +56,10 @@ const PlaidComp: React.FC = () => {
 
   const handleOnSuccess = async (public_token: string) => {
     if (public_token) {
-      console.log("Publlic Token");
+      console.log("Public Token");
       console.log(public_token);
     } else {
-      console.log("Error while retreiving public token");
+      console.log("Error while retrieving public token");
     }
     try {
       const response = await axios.post(
@@ -78,19 +78,19 @@ const PlaidComp: React.FC = () => {
       );
       const accountsData = accountsResponse.data.accounts;
       dispatch(setAccounts(accountsData));
-      console.log("account Reesponse");
+      console.log("Account Response");
       console.log(accountsResponse);
 
       const transactionsResponse = await axios.post(
         "http://localhost:3000/api/user/transactions",
         {
           accessToken,
-          startDate: "2023-01-01",
-          endDate: "2023-12-31", // Adjust dates as necessary
+          startDate: "2024-06-28",
+          endDate: "2024-06-30", // Adjust dates as necessary
         }
       );
       const transactionsData = transactionsResponse.data.transactions;
-      console.log("transactionsResponse");
+      console.log("Transactions Response");
       console.log(transactionsResponse);
 
       dispatch(setTransactions(transactionsData));
@@ -103,13 +103,13 @@ const PlaidComp: React.FC = () => {
   return (
     <div>
       {!isRegistered ? (
-        <div className="bg-white shadow-md rounded  px-8 pt-6 pb-8 mb-4">
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <h1 className="text-2xl font-bold mb-4">Plaid</h1>
           <p className="text-gray-700 mb-4">
             Connect your Bank Account to view Balance and last few transactions
           </p>
           {linkToken ? (
-            <div className="inline-block  border-black font-bold py-2 px-2 rounded">
+            <div className="inline-block border-black font-bold py-2 px-2 rounded">
               <PlaidLink
                 token={linkToken}
                 onSuccess={handleOnSuccess}
@@ -127,7 +127,14 @@ const PlaidComp: React.FC = () => {
           {error && <p className="text-red-500">{error}</p>}
         </div>
       ) : (
-        <Account accounts={accounts} transactions={transactions} />
+        <>
+          <Account transactions={transactions} />
+          {console.log("Accounts passed to Account component:", accounts)}
+          {console.log(
+            "Transactions passed to Account component:",
+            transactions
+          )}
+        </>
       )}
     </div>
   );
