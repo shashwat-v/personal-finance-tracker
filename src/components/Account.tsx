@@ -3,15 +3,10 @@ import Card from "./Card";
 import { MdAccountBalanceWallet } from "react-icons/md";
 
 interface AccountProps {
-  // accounts: any[];
   transactions: any[];
 }
 
-const Account: React.FC<AccountProps> = ({
-  // accounts = [],
-  transactions = [],
-}) => {
-  // console.log("Accounts in Account component:", accounts);
+const Account: React.FC<AccountProps> = ({ transactions = [] }) => {
   console.log("Transactions in Account component:", transactions);
 
   return (
@@ -28,7 +23,7 @@ const Account: React.FC<AccountProps> = ({
             <h1 className="text-center text-xl font-medium py-2">
               Account Balance
             </h1>
-            <h2 className="text-2xl font-bold ">
+            <h2 className="text-2xl font-bold">
               <span>{transactions.accounts[0].balances.current}</span>
             </h2>
           </div>
@@ -36,19 +31,20 @@ const Account: React.FC<AccountProps> = ({
       </div>
       {/* col */}
       <div className="pt-4">
-        {/* <div className="flex-grow flex flex-col"> */}
         <h1 className="text-xl">Recent Transactions</h1>
         <div className="overflow-auto flex flex-col gap-1 h-60 overflow-y-scroll no-scrollbar">
           {transactions.added.map((trans, index) => (
             <div
               key={index}
-              className="flex justify-between items-center border-b border-gray-200 py-2.5"
+              className="flex flex-col border-b border-gray-200 py-2.5"
             >
-              <div className="flex items-center gap-2">
-                <h1>{trans.category.join(", ")}</h1>
+              <div className="flex justify-between items-center">
+                <h1 className="text-center">
+                  {trans.category[0].split(" ")[0]}
+                </h1>
+                <h1 className="flex-grow text-center">{trans.date}</h1>
+                <h1 className="font-bold">{trans.amount}</h1>
               </div>
-              <h1>{trans.date}</h1>
-              <h1 className="font-bold">{trans.amount}</h1>
             </div>
           ))}
         </div>

@@ -27,7 +27,7 @@ function Layout() {
         <Sidebar />
       </div>
       <div className="flex-1 overflow-y-auto m-3">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           <div className="flex justify-end gap-3">
             <button onClick={handleLogout}>
               <span className="text-[30px] ">

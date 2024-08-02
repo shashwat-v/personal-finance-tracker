@@ -40,6 +40,7 @@ export const userSlice = createSlice({
       state.isAuthenticated = false;
       state.loading = false;
       state.error = null;
+      state.token = null;
     },
     signUpStart: (state) => {
       console.log("signUpStart:", current(state));

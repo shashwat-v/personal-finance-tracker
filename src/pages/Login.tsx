@@ -16,12 +16,30 @@ import {
 } from "../redux/slices/auth/userSlice";
 import { loginUser } from "../redux/slices/auth/apiService";
 import { store } from "../redux/store";
+import axios, { AxiosResponse } from "axios";
 // import { GiEarrings } from "react-icons/gi";
-
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 interface FormInputs extends FieldValues {
   email: string;
   password: string;
 }
+interface IUser {
+  googleId: string;
+  email: string;
+  name: string;
+  phoneNumber?: string;
+}
+
+interface IResponse {
+  user?: IUser;
+  message: string;
+}
+const apiClient = axios.create({
+  baseURL: "http://localhost:3000", //backend base URL
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 function Login() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -45,8 +63,8 @@ function Login() {
     dispatch(loginInStart());
     try {
       const response = await loginUser(data);
-      const { _id, email, password, token } = response.data;
-      dispatch(loginInSuccess({ email, password, _id, token }));
+      const { _id, email, token } = response.data;
+      dispatch(loginInSuccess({ email, _id, token }));
       localStorage.setItem("token", response.data.token);
       console.log(`${response}:Login succesfully`);
       console.log("State after loginInSuccess:", store.getState());
@@ -57,6 +75,34 @@ function Login() {
   };
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
+  };
+
+  const handleGoogleLogin = async (token: string): Promise<void> => {
+    console.log(token);
+
+    try {
+      const response: AxiosResponse<{ user: any; message: string }> =
+        await apiClient.post("/api/user/google", { token });
+
+      if (response.data.message === "User authenticated successfully") {
+        const { _id, email, token } = response.data.user;
+        dispatch(loginInSuccess({ email, _id, token }));
+        // Handle successful login
+        // console.log(response.data.user);
+      }
+    } catch (error: unknown) {
+      if (
+        axios.isAxiosError(error) &&
+        error.response &&
+        error.response.status === 404
+      ) {
+        // User not found, redirect to sign-up page
+        console.log("User not found. Redirecting to sign-up page.");
+        navigate("/signup");
+      } else {
+        console.error("Authentication failed:", error);
+      }
+    }
   };
 
   return (
@@ -131,11 +177,27 @@ function Login() {
           >
             Login
           </button>
-
-          <button className="w-full p-3 border border-gray-300 rounded-md flex items-center justify-center">
+          <GoogleOAuthProvider clientId="824073592427-m2ejpmb7pbgqba1ka4ooq4us6ppf72qn.apps.googleusercontent.com">
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                console.log(credentialResponse);
+                const token = credentialResponse.credential;
+                if (token) {
+                  handleGoogleLogin(token);
+                  // dispatch(loginInSuccess(credentialResponse));
+                } else {
+                  console.error("No credential received from Google");
+                }
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+          </GoogleOAuthProvider>
+          {/* <button className="w-full p-3 border border-gray-300 rounded-md flex items-center justify-center">
             <img src={googleIcon} alt="Google" className="w-6 h-6 mr-2" />
             <span className="text-lg font-normal">Google</span>
-          </button>
+          </button> */}
         </form>
         <p className="mt-4 text-center">
           Create new account?{" "}
