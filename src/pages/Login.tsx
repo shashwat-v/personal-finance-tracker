@@ -1,6 +1,6 @@
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import loginBackground from "../assets/LoginBackground.webp";
-import googleIcon from "../assets/GoogleIcon.png";
+// import googleIcon from "../assets/GoogleIcon.png";
 import emailIcon from "../assets/EmailIcon.png"; // Add your email icon path
 import passwordIcon from "../assets/PasswordIcon.png"; // Add your password icon path
 import { useNavigate } from "react-router-dom";
@@ -17,25 +17,24 @@ import {
 import { loginUser } from "../redux/slices/auth/apiService";
 import { store } from "../redux/store";
 import axios, { AxiosResponse } from "axios";
-// import { GiEarrings } from "react-icons/gi";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 interface FormInputs extends FieldValues {
   email: string;
   password: string;
 }
-interface IUser {
-  googleId: string;
-  email: string;
-  name: string;
-  phoneNumber?: string;
-}
+// interface IUser {
+//   googleId: string;
+//   email: string;
+//   name: string;
+//   phoneNumber?: string;
+// }
 
-interface IResponse {
-  user?: IUser;
-  message: string;
-}
+// interface IResponse {
+//   user?: IUser;
+//   message: string;
+// }
 const apiClient = axios.create({
-  baseURL: "http://localhost:3000", //backend base URL
+  baseURL: "http://localhost:3000",
   headers: {
     "Content-Type": "application/json",
   },
@@ -53,6 +52,7 @@ function Login() {
   const { loading, currentUser } = useSelector(
     (state: RootState) => state.user
   );
+
   useEffect(() => {
     if (currentUser) {
       navigate("/");
@@ -63,9 +63,9 @@ function Login() {
     dispatch(loginInStart());
     try {
       const response = await loginUser(data);
-      const { _id, email, token } = response.data;
-      dispatch(loginInSuccess({ email, _id, token }));
-      localStorage.setItem("token", response.data.token);
+      const { _id, email, phoneNumber, fullname } = response.data;
+      dispatch(loginInSuccess({ email, _id, phoneNumber, fullname }));
+
       console.log(`${response}:Login succesfully`);
       console.log("State after loginInSuccess:", store.getState());
     } catch (error) {
@@ -78,15 +78,14 @@ function Login() {
   };
 
   const handleGoogleLogin = async (token: string): Promise<void> => {
-    console.log(token);
-
+    // console.log(token);
     try {
       const response: AxiosResponse<{ user: any; message: string }> =
         await apiClient.post("/api/user/google", { token });
 
       if (response.data.message === "User authenticated successfully") {
-        const { _id, email, token } = response.data.user;
-        dispatch(loginInSuccess({ email, _id, token }));
+        const { _id, email, phoneNumber, fullname } = response.data.user;
+        dispatch(loginInSuccess({ email, _id, phoneNumber, fullname }));
         // Handle successful login
         // console.log(response.data.user);
       }
@@ -140,7 +139,6 @@ function Login() {
               className="absolute top-3 left-3 w-8 h-7 opacity-75"
             />
           </div>
-
           <div className="relative w-full mb-4 flex gap-1">
             <input
               type={passwordVisible ? "text" : "password"}
@@ -154,9 +152,7 @@ function Login() {
                 },
               })}
             />
-            {errors.password && (
-              <p className="text-red-600">{errors.password.message}</p>
-            )}
+
             <img
               src={passwordIcon}
               alt="Password"
@@ -169,6 +165,9 @@ function Login() {
             >
               {passwordVisible ? <BsEyeFill /> : <RiEyeCloseLine />}
             </button>
+            {errors.password && (
+              <p className="text-red-600">{errors.password.message}</p>
+            )}
           </div>
           <button
             type="submit"

@@ -4,23 +4,31 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import { logOut } from "../redux/slices/auth/userSlice";
+import { logoutUser } from "../redux/slices/auth/apiService";
 import { CiLogout } from "react-icons/ci";
+
 function Layout() {
   const dispatch = useDispatch();
 
-  // Get authentication status from Redux store
   const isAuthenticated = useSelector(
     (state: RootState) => state.user.isAuthenticated
   );
 
-  const handleLogout = () => {
-    dispatch(logOut());
+  const handleLogout = async () => {
+    try {
+      const response = await logoutUser();
+      if (response) {
+        dispatch(logOut());
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
 
-  // If not authenticated, redirect to login
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
+
   return (
     <div className="w-full h-screen flex flex-col md:flex-row">
       <div className="w-1/6 h-screen bg-[#EEEDEB] sticky top-0 hidden md:block">

@@ -1,11 +1,31 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
-  currentUser: null,
-  loading: false,
-  isAuthenticated: false,
-  token: null,
-  error: null,
+const loadState = () => {
+  try {
+    const serializedState = localStorage.getItem("userState");
+    if (serializedState) {
+      return JSON.parse(serializedState);
+    }
+  } catch (err) {
+    console.error("Failed to load state from localStorage", err);
+  }
+  return {
+    currentUser: null,
+    loading: false,
+    isAuthenticated: false,
+    error: null,
+  };
+};
+
+const initialState = loadState();
+
+const saveState = (state: any) => {
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem("userState", serializedState);
+  } catch (err) {
+    console.error("Failed to save state to localStorage", err);
+  }
 };
 
 export const userSlice = createSlice({
@@ -13,55 +33,48 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     loginInStart: (state) => {
-      console.log("loginInStart:", current(state));
       state.currentUser = null;
       state.loading = true;
       state.error = null;
     },
-    loginInSuccess: (state, action) => {
-      console.log("loginInSuccess (before):", current(state));
+    loginInSuccess: (state, action: PayloadAction<any>) => {
       state.currentUser = action.payload;
-      state.token = action.payload.token;
       state.loading = false;
       state.error = null;
       state.isAuthenticated = true;
-      console.log("loginInSuccess (after):", current(state));
+      saveState(state); // Save state to localStorage
     },
-    loginInFailure: (state, action) => {
-      console.log("loginInFailure:", current(state));
+    loginInFailure: (state, action: PayloadAction<any>) => {
       state.currentUser = null;
       state.loading = false;
       state.error = action.payload;
       state.isAuthenticated = false;
+      saveState(state);
     },
     logOut: (state) => {
-      console.log("logOut:", current(state));
       state.currentUser = null;
       state.isAuthenticated = false;
       state.loading = false;
       state.error = null;
-      state.token = null;
+      saveState(state);
     },
     signUpStart: (state) => {
-      console.log("signUpStart:", current(state));
       state.loading = true;
       state.error = null;
     },
-    signUpSuccess: (state, action) => {
-      console.log("signUpSuccess (before):", current(state));
+    signUpSuccess: (state, action: PayloadAction<any>) => {
       state.currentUser = action.payload;
-      state.token = action.payload.token;
       state.loading = false;
       state.error = null;
       state.isAuthenticated = true;
-      console.log("signUpSuccess (after):", current(state));
+      saveState(state);
     },
-    signUpFailure: (state, action) => {
-      console.log("signUpFailure:", current(state));
+    signUpFailure: (state, action: PayloadAction<any>) => {
       state.currentUser = null;
       state.loading = false;
       state.error = action.payload;
       state.isAuthenticated = false;
+      saveState(state);
     },
   },
 });
@@ -75,4 +88,5 @@ export const {
   signUpFailure,
   logOut,
 } = userSlice.actions;
+
 export default userSlice.reducer;
